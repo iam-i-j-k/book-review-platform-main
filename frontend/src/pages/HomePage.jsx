@@ -93,8 +93,9 @@ const filteredSuggestions = searchTerm
   // Remove the useEffect that scrolls on every searchTerm change
 
 const handleSearchKeyDown = (e) => {
-  if (e.key === "Enter") {
-    handleSearch(searchTerm);
+  if (e.key === "Enter" && booksGridRef.current) {
+      booksGridRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      handleSearch(searchTerm);
   }
 };
 
