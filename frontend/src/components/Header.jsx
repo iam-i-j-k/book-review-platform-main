@@ -52,35 +52,47 @@ export default function Header({ user }) {
                 </button>
               </div>
             ) : (
-              <div className="relative group">
+              <div className="relative">
+                {/* Avatar */}
                 <div
-                  onClick={() => navigate("/profile")}
+                  onClick={() => setIsMenuOpen(prev => !prev)}
                   className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 ring-2 ring-white"
                   title={user.username}
                 >
                   {user.username?.charAt(0).toUpperCase()}
                 </div>
 
-                {/* User Dropdown */}
-                <div className="absolute right-0 top-12 w-48 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                  <div className="p-4 border-b border-gray-100">
-                    <p className="font-semibold text-gray-800">{user.username}</p>
-                    <p className="text-sm text-gray-500">{user.email}</p>
+                {/* Dropdown */}
+                {isMenuOpen && (
+                  <div className="absolute right-0 top-12 w-48 bg-white rounded-xl shadow-xl border border-gray-100 z-50 animate-fadeIn">
+                    <div className="p-4 border-b border-gray-100">
+                      <p className="font-semibold text-gray-800">{user.username}</p>
+                      <p className="text-sm text-gray-500">{user.email}</p>
+                    </div>
+                    <div>
+                      <button
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700 transition-colors"
+                        onClick={() => {
+                          setIsMenuOpen(false)
+                          navigate("/profile")
+                        }}
+                      >
+                        👤 Profile
+                      </button>
+                      <button
+                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors"
+                        onClick={() => {
+                          localStorage.removeItem("user")
+                          navigate("/login")
+                        }}
+                      >
+                        🚪 Logout
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <hr />
-                    <button
-                      className="w-full text-left rounded-b-xl cursor-pointer px-4 py-2 text-red-600 hover:bg-red-50 transition-colors"
-                      onClick={() => {
-                        localStorage.removeItem("user");
-                        window.location.href = "/login"; // or use navigate("/login")
-                      }}
-                    >
-                      🚪 Logout
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
+
             )}
 
           </div>
