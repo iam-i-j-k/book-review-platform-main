@@ -14,6 +14,24 @@ export default function HomePage() {
   const booksPerPage = 12
   const booksGridRef = useRef(null);
 
+  const suggestions = [
+  "Atomic Habits",
+  "Clean Code",
+  "Harry Potter",
+  "JavaScript",
+  "React",
+  "Dune",
+  "The Alchemist",
+  "George Orwell",
+  "Science Fiction",
+];
+
+const filteredSuggestions = searchTerm
+  ? suggestions.filter((s) =>
+      s.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  : [];
+
   const genres = [
     "all",
     "fiction",
@@ -74,12 +92,12 @@ export default function HomePage() {
 
   // Remove the useEffect that scrolls on every searchTerm change
 
-  // Add this handler:
-  const handleSearchKeyDown = (e) => {
-    if (e.key === "Enter" && booksGridRef.current) {
-      booksGridRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+const handleSearchKeyDown = (e) => {
+  if (e.key === "Enter") {
+    handleSearch(searchTerm);
+  }
+};
+
 
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage)
   const currentBooks = filteredBooks.slice((currentPage - 1) * booksPerPage, currentPage * booksPerPage)
@@ -149,29 +167,48 @@ export default function HomePage() {
           </p>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="relative group">
-              <input
-                type="text"
-                placeholder="Search books, authors, or subjects..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={handleSearchKeyDown}
-                className="w-full px-6 py-4 pl-12 text-gray-900 text-lg rounded-full shadow-lg transition-all duration-300 border border-transparent group-hover:border-indigo-400 focus:outline-none focus:ring-4 focus:ring-indigo-300 bg-white"
-              />
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-500 text-xl pointer-events-none">
-                🔍
-              </div>
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 transition duration-300"
-                >
-                  ✖
-                </button>
-              )}
+        <div className="relative max-w-2xl mx-auto mb-8">
+          <div className="relative group">
+            <input
+              type="text"
+              placeholder="Search books, authors, or subjects..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
+              className="w-full px-6 py-4 pl-12 text-white text-lg rounded-full backdrop-blur-md bg-white/20 border border-white/30 shadow-lg placeholder-white/70 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-all duration-300"
+            />
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-xl pointer-events-none">
+              🔍
             </div>
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute cursor-pointer right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-red-400 transition duration-300"
+              >
+                ✖
+              </button>
+            )}
           </div>
+
+          {/* Suggestions Dropdown */}
+          {filteredSuggestions.length > 0 && (
+            <ul className="absolute z-10 w-full mt-2 bg-white/30 backdrop-blur-md text-gray-800 font-medium rounded-lg shadow-lg border border-white/20">
+              {filteredSuggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  onClick={() => {
+                    setSearchTerm(suggestion);
+                    handleSearch(suggestion);
+                  }}
+                  className="px-4 py-2 cursor-pointer hover:bg-white/40 transition"
+                >
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
 
 
           {/* Stats */}
