@@ -148,7 +148,7 @@ const handleSearchKeyDown = (e) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600">
       {/* Header Bar */}
       <Header user={user} />
 
