@@ -12,7 +12,7 @@ export default function LoginPage() {
     e.preventDefault()
     setError("")
     try {
-      const res = await axios.post("http://localhost:4000/login", { email, password })
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, { email, password })
       localStorage.setItem("user", JSON.stringify(res.data.user))
       navigate("/")
     } catch (err) {

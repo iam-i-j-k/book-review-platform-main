@@ -13,7 +13,7 @@ export default function SignupPage() {
     e.preventDefault()
     setError("")
     try {
-      await axios.post("http://localhost:4000/signup", { username, email, password })
+      await axios.post(`${import.meta.env.VITE_API_URL}/signup`, { username, email, password })
       navigate("/login")
     } catch (err) {
       setError("Signup failed. Try a different email.")

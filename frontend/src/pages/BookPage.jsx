@@ -68,7 +68,7 @@ export default function BookPage() {
 
         if (txtUrl) {
           setContentLoading(true)
-          fetch(`http://localhost:4000/api/gutenberg/${id}`)
+          fetch(`${import.meta.env.VITE_API_URL}/api/gutenberg/${id}`)
             .then((res) => res.text())
             .then((rawText) => {
               const cleaned = cleanGutenbergText(rawText)

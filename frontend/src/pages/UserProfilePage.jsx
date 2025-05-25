@@ -19,7 +19,7 @@ export default function UserProfilePage() {
       return
     }
     axios
-      .get(`http://localhost:4000/users/${localUser._id}`)
+      .get(`${import.meta.env.VITE_API_URL}/users/${localUser._id}`)
       .then((res) => {
         setUser(res.data)
         setForm({ username: res.data.username, bio: res.data.bio || "" })
@@ -42,7 +42,7 @@ export default function UserProfilePage() {
     setError("")
     try {
       const localUser = JSON.parse(localStorage.getItem("user"))
-      const res = await axios.put(`http://localhost:4000/users/${localUser._id}`, form)
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/users/${localUser._id}`, form)
       setUser(res.data)
       // Update localStorage with new user info
       localStorage.setItem("user", JSON.stringify(res.data))

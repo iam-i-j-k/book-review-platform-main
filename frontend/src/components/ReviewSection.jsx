@@ -13,7 +13,7 @@ export default function ReviewSection({ bookId }) {
   useEffect(() => {
     if (!bookId) return
     axios
-      .get(`http://localhost:4000/reviews?bookId=${bookId}`)
+      .get(`${import.meta.env.VITE_API_URL}/reviews?bookId=${bookId}`)
       .then((res) => setReviews(res.data))
       .catch(() => setReviews([]))
   }, [bookId])
@@ -23,7 +23,7 @@ export default function ReviewSection({ bookId }) {
     setLoading(true)
     setError("")
     try {
-      await axios.post("http://localhost:4000/reviews", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/reviews`, {
         bookId,
         userId: user._id,
         rating,
@@ -32,7 +32,7 @@ export default function ReviewSection({ bookId }) {
       setReviewText("")
       setRating(5)
       // Refresh reviews
-      const res = await axios.get(`http://localhost:4000/reviews?bookId=${bookId}`)
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/reviews?bookId=${bookId}`)
       setReviews(res.data)
     } catch (err) {
       setError("Failed to submit review.")
