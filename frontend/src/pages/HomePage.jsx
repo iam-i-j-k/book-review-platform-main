@@ -37,7 +37,7 @@ export default function HomePage() {
         setBooks(data.results)
         setFilteredBooks(data.results)
         // Set featured books as the first 6 most downloaded
-        const featured = data.results.sort((a, b) => b.download_count - a.download_count).slice(0, 6)
+        const featured = [...data.results].sort((a, b) => b.download_count - a.download_count).slice(0, 6)
         setFeaturedBooks(featured)
         setLoading(false)
       } catch (error) {
@@ -150,18 +150,29 @@ export default function HomePage() {
 
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto mb-8">
-            <div className="relative">
+            <div className="relative group">
               <input
                 type="text"
                 placeholder="Search books, authors, or subjects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleSearchKeyDown}
-                className="w-full px-6 py-4 text-white text-lg rounded-full border-0 shadow-lg focus:ring-4 focus:ring-white focus:ring-opacity-30 outline-none"
+                className="w-full px-6 py-4 pl-12 text-gray-900 text-lg rounded-full shadow-lg transition-all duration-300 border border-transparent group-hover:border-indigo-400 focus:outline-none focus:ring-4 focus:ring-indigo-300 bg-white"
               />
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</div>
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-500 text-xl pointer-events-none">
+                🔍
+              </div>
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 transition duration-300"
+                >
+                  ✖
+                </button>
+              )}
             </div>
           </div>
+
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
